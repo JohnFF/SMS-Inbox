@@ -9,6 +9,18 @@ class CRM_Smsinbox_Page_SmsInbox extends CRM_Core_Page {
       'options' => array('limit' => 0),
     ));
 
+    foreach ($inboundSmsMessages as &$eachInboundSmsMessage) {
+      $eachInboundSmsMessage['to'] = civicrm_api3('contact', 'getvalue', array(
+        'return' => 'display_name',
+        'id' => $eachInboundSmsMessage['source_contact_id'],
+      ));
+
+      $eachInboundSmsMessage['from'] = civicrm_api3('contact', 'get', array(
+        'return' => 'display_name',
+        'activity_id' => $eachInboundSmsMessage['id'],
+      ));
+    }
+
     $this->assign('inboundSmsMessages', $inboundSmsMessages);
 
     parent::run();

@@ -8,8 +8,8 @@
         <td>{$eachInboundSmsMessage.details}</td>
         <td>{$eachInboundSmsMessage.to}</td>
         <td>{$eachInboundSmsMessage.from}</td>
-        <td>{$eachInboundSmsMessage.datetime}</td>
-        <td>Mark as read / Mark as unread / Reply / Attach number to contact</td>
+        <td>{$eachInboundSmsMessage.activity_date_time}</td>
+        <td>Mark as read | Mark as unread | Reply | Attach number to contact</td>
     </tr>
     {/foreach}
 </table>
