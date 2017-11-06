@@ -3,7 +3,7 @@
   <item>
     <path>civicrm/smsinbox</path>
     <page_callback>CRM_Smsinbox_Page_SmsInbox</page_callback>
-    <title>SmsInbox</title>
+    <title>SMS Inbox</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>
