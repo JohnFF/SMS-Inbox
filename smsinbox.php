@@ -150,3 +150,34 @@ function smsinbox_civicrm_navigationMenu(&$menu) {
   ));
   _smsinbox_civix_navigationMenu($menu);
 } // */
+
+/**
+ * Implements hook_civicrm_inboundSms
+ */
+function smsinbox_civicrm_inboundSMS($message) {
+  watchdog('SMS Inbox', print_r($message, TRUE), array(), WATCHDOG_ERROR);
+}
+
+/**
+ * Implements hook_civicrm_navigationMenu().
+ */
+function smsinbox_civicrm_navigationMenu(&$params) {
+  $sMailingMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Mailings', 'id', 'name');
+
+  //  Get the maximum key of $params
+  $maxKey = max(array_keys($params));
+
+  $params[$sMailingMenuId]['child'][$maxKey + 1] = array(
+    'attributes' => array(
+      'label'      => 'SMS Inbox',
+      'name'       => 'SMSInbox',
+      'url'        => 'civicrm/smsinbox',
+      'permission' => NULL,
+      'operator'   => NULL,
+      'separator'  => NULL,
+      'parentID'   => $sMailingMenuId,
+      'navID'      => $maxKey + 1,
+      'active'     => 1,
+    ),
+  );
+}
