@@ -10,7 +10,7 @@
         <th>Message</th><!--<th>To</th>--><th>From</th><th>Sent</th><th>Options</th>
     </tr>
     {foreach from=$inboundSmsMessages item=eachInboundSmsMessage}
-    <tr id="row_activity_id_{$eachInboundSmsMessage.id}" {if 0 == $eachInboundSmsMessage.read}class="unread_message"{/if}>
+    <tr id="row_activity_id_{$eachInboundSmsMessage.id}" {if 0 == $eachInboundSmsMessage.read}class="unread_message"{/if} data-activity_id="{$eachInboundSmsMessage.id}">
         <td>{$eachInboundSmsMessage.details}</td>
         <!-- <td><a href="/civicrm/contact/view?reset=1&cid={$eachInboundSmsMessage.source_contact_id}">{$eachInboundSmsMessage.to}</a></td> -->
         <td><a href="/civicrm/contact/view?reset=1&cid={$eachInboundSmsMessage.source_contact_id}">{$eachInboundSmsMessage.from}</td>
@@ -28,9 +28,9 @@
     </tr>
     {/foreach}
 </table>
-<input type="button" value="Mark all as read."></input>
+<input id='markAllAsReadButton' type="button" value="Mark all as read."></input>
 
-<script type="text/javascript">var read_custom_field_id = "{$readCustomField}";</script>
+<script type="text/javascript" id='mark_all_as_read'>var read_custom_field_id = "{$readCustomField}";</script>
 
 {crmScript ext=com.civifirst.smsinbox file=js/smsinbox.js}
 {crmStyle ext=com.civifirst.smsinbox file=css/smsinbox.css}
