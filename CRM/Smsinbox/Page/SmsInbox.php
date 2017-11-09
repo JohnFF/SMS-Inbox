@@ -13,8 +13,8 @@ class CRM_Smsinbox_Page_SmsInbox extends CRM_Core_Page {
     // unset($inboundSmsActivity[$this->messageReadCustomFieldId]);
 
     $inboundSmsActivity['from'] = civicrm_api3('contact', 'getvalue', array(
-        'return' => 'display_name',
-        'id' => $inboundSmsActivity['source_contact_id'],
+      'return' => 'display_name',
+      'id' => $inboundSmsActivity['source_contact_id'],
     ));
 
     // $eachInboundSmsMessage['from_contact_id'] = civicrm_api3('activity_contact', 'getvalue', array(

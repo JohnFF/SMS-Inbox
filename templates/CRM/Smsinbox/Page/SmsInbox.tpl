@@ -1,10 +1,7 @@
-<style>
-.unread_message {
-    background-color: #98FB98;
-    color: #98FB98;   
-}
-</style>
+{* Set the handle of the read_custom_field_id for use by JS API calls *}
+<script type="text/javascript" id='mark_all_as_read'>var read_custom_field_id = "{$readCustomField}";</script>
 
+{* Display inbound messages *}
 <table>
     <tr>
         <th>Message</th><!--<th>To</th>--><th>From</th><th>Sent</th><th>Options</th>
@@ -22,15 +19,16 @@
                 <a href="" class="markAsReadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as read </a>
             {/if}
              | 
-            <a class="replyButton" href="">Reply</a> | 
+            <a class="replyButton crm-popup" href="/civicrm/smsinbox/sendsms">Reply</a> | 
             <a class="attachToContactButton" href="">Attach number to contact</a>
         </td>
     </tr>
     {/foreach}
 </table>
-<input id='markAllAsReadButton' type="button" value="Mark all as read."></input>
 
-<script type="text/javascript" id='mark_all_as_read'>var read_custom_field_id = "{$readCustomField}";</script>
+{* Buttons at bottom of the page *}
+<a id='markAllAsReadButton' class="button">Mark all as read</a>
+<a class="button crm-popup" href="/civicrm/smsinbox/sendsms">Send SMS message</a>
 
 {crmScript ext=com.civifirst.smsinbox file=js/smsinbox.js}
 {crmStyle ext=com.civifirst.smsinbox file=css/smsinbox.css}

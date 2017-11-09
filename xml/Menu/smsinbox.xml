@@ -6,4 +6,10 @@
     <title>SMS Inbox</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/smsinbox/sendsms</path>
+    <page_callback>CRM_Smsinbox_Form_SendSms</page_callback>
+    <title>SendSms</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
