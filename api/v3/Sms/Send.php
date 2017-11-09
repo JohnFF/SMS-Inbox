@@ -25,5 +25,8 @@ function _civicrm_api3_sms_Send_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_sms_Send($params) {
+  $smsProviderId = array_key_exists('sms_provider_id', $params) ? $params['sms_provider_id'] : NULL;
 
+  $smsSender = new CRM_Smsinbox_SmsSender();
+  $smsSender->sendSmsMessage($params['recipient_contact_id'], $params['message_text'], $smsProviderId);
 }

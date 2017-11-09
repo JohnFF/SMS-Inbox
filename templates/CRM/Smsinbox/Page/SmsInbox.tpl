@@ -18,8 +18,8 @@
             {else}
                 <a href="" class="markAsReadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as read </a>
             {/if}
-             | 
-            <a class="replyButton crm-popup" href="/civicrm/smsinbox/sendsms">Reply</a> | 
+             |
+            <a class="replyButton crm-popup" href="/civicrm/smsinbox/sendsms">Reply</a> |
             <a class="attachToContactButton" href="">Attach number to contact</a>
         </td>
     </tr>
@@ -27,7 +27,7 @@
 </table>
 
 {* Buttons at bottom of the page *}
-<a id='markAllAsReadButton' class="button">Mark all as read</a>
+<a id='markAllAsReadButton' class="button" href='#'>Mark all as read</a>
 <a class="button crm-popup" href="/civicrm/smsinbox/sendsms">Send SMS message</a>
 
 {crmScript ext=com.civifirst.smsinbox file=js/smsinbox.js}

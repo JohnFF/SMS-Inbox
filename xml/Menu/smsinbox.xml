@@ -9,7 +9,7 @@
   <item>
     <path>civicrm/smsinbox/sendsms</path>
     <page_callback>CRM_Smsinbox_Form_SendSms</page_callback>
-    <title>SendSms</title>
+    <title>Send SMS</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
 </menu>
