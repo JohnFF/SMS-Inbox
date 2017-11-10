@@ -17,6 +17,17 @@ class CRM_Smsinbox_Page_SmsInbox extends CRM_Core_Page {
       'id' => $inboundSmsActivity['source_contact_id'],
     ));
 
+    $contactDetails = civicrm_api3('contact', 'getsingle', array(
+      'sequential' => 1,
+      'id' => $inboundSmsActivity['source_contact_id'],
+      'return' => array('display_name', 'email'),
+    ));
+
+    $inboundSmsActivity['from'] = !empty($contactDetails['display_name']) ? $contactDetails['display_name'] : $contactDetails['email'];
+
+    // If there's no display name we show the email address, consistent with
+    // CRM_Contact_BAO_Contact getDisplayAndImage
+
     // $eachInboundSmsMessage['from_contact_id'] = civicrm_api3('activity_contact', 'getvalue', array(
     //   'return' => 'contact_id',
     //   'activity_id' => $eachInboundSmsMessage['id'],
