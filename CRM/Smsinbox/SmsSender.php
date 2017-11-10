@@ -35,12 +35,14 @@ class CRM_Smsinbox_SmsSender {
     $smsParams = array();
 
     // Use default SMS provider unless one is explicitly passed.
-    if (!empty($smsProviderId)) {
-      $smsParams['provider_id'] = civicrm_api3('SmsProvider', 'getvalue', array(
+    if (empty($smsProviderId)) {
+      $defaultSmsProvider = civicrm_api3('SmsProvider', 'getvalue', array(
         'sequential' => 1,
         'return' => array('id'),
         'is_default' => 1,
       ));
+
+      $smsParams['provider_id'] = $defaultSmsProvider['values'][0]['id'];
     }
     else {
       $smsParams['provider_id'] = $smsProviderId;

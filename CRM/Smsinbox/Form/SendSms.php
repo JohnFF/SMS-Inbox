@@ -35,16 +35,9 @@ class CRM_Smsinbox_Form_SendSms extends CRM_Core_Form {
 
     $this->addEntityRef('recipient_contact_id', 'Recipient', array(), TRUE);
 
-//    $this->add(
-//      'select2', // field type
-//      'recipient_contact_id', // field name
-//      'Recipient', // field label
-//      TRUE // is required
-//    );
-
     $this->add(
       'textarea', // field type
-      'mesage_text', // field name
+      'message_text', // field name
       'Message', // field label
       TRUE // is required
     );
