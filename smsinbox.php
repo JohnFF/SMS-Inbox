@@ -183,6 +183,7 @@ function smsinbox_civicrm_navigationMenu(&$params) {
 }
 
 /**
+ * Not every "page" is a CiviCRM page.
  *
  * @param type $page
  */
@@ -191,5 +192,14 @@ function smsinbox_civicrm_pageRun(&$page) {
     return;
   }
 
+  CRM_Smsinbox_Utils::checkForUnreadMessageStatus();
+}
+
+/**
+ *
+ * @param type $formName
+ * @param type $form
+ */
+function smsinbox_civicrm_buildForm($formName, &$form) {
   CRM_Smsinbox_Utils::checkForUnreadMessageStatus();
 }
