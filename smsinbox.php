@@ -181,3 +181,15 @@ function smsinbox_civicrm_navigationMenu(&$params) {
     ),
   );
 }
+
+/**
+ *
+ * @param type $page
+ */
+function smsinbox_civicrm_pageRun(&$page) {
+  if (get_class($page) == 'CRM_Smsinbox_Page_SmsInbox') {
+    return;
+  }
+
+  CRM_Smsinbox_Utils::checkForUnreadMessageStatus();
+}

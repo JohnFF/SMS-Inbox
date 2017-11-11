@@ -58,11 +58,20 @@ class CRM_Smsinbox_Form_SendSms extends CRM_Core_Form {
   public function postProcess() {
     $values = $this->exportValues();
     $smsSender = new CRM_Smsinbox_SmsSender();
-    $smsSender->sendSmsMessage($values['recipient_contact_id'], $values['message_text'], $values['sms_provider']);
+    list($sent, $activityId, $countSuccess) = $smsSender->sendSmsMessage($values['recipient_contact_id'], $values['message_text'], $values['sms_provider']);
 
-    CRM_Core_Session::setStatus(E::ts('You picked color "%1"', array(
-      1 => "message sent",
-    )));
+    $contactName = CRM_Smsinbox_Utils::getDisplayNameWithFallback($values['recipient_contact_id']);
+
+    if ($countSuccess >= 1) {
+      CRM_Core_Session::setStatus(E::ts('Message to "%1" sent', array(
+        1 => $contactName,
+      )), 'success');
+    }
+    else {
+      CRM_Core_Session::setStatus(E::ts('Failed to send message to "%1"', array(
+        1 => $contactName,
+      )), 'alert');
+    }
     parent::postProcess();
   }
 

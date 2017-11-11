@@ -17,13 +17,7 @@ class CRM_Smsinbox_Page_SmsInbox extends CRM_Core_Page {
       'id' => $inboundSmsActivity['source_contact_id'],
     ));
 
-    $contactDetails = civicrm_api3('contact', 'getsingle', array(
-      'sequential' => 1,
-      'id' => $inboundSmsActivity['source_contact_id'],
-      'return' => array('display_name', 'email'),
-    ));
-
-    $inboundSmsActivity['from'] = !empty($contactDetails['display_name']) ? $contactDetails['display_name'] : $contactDetails['email'];
+    $inboundSmsActivity['from'] = CRM_Smsinbox_Utils::getDisplayNameWithFallback($inboundSmsActivity['source_contact_id']);
 
     // If there's no display name we show the email address, consistent with
     // CRM_Contact_BAO_Contact getDisplayAndImage
@@ -42,10 +36,7 @@ class CRM_Smsinbox_Page_SmsInbox extends CRM_Core_Page {
 
   public function run() {
 
-    $this->messageReadCustomFieldId = 'custom_' . civicrm_api3('CustomField', 'getvalue', array(
-      'name' => 'message_read',
-      'return' => 'id',
-    ));
+    $this->messageReadCustomFieldId = CRM_Smsinbox_Utils::getMessageReadCustomFieldId();
 
     $inboundSmsMessages = civicrm_api3('activity', 'get', array(
       'sequential' => 1,
