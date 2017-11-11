@@ -196,8 +196,9 @@ function smsinbox_civicrm_pageRun(&$page) {
 }
 
 /**
+ * Run on forms for when a "page" isn't a CiviCRM page.
  *
- * @param type $formName
+ * @param string $formName
  * @param type $form
  */
 function smsinbox_civicrm_buildForm($formName, &$form) {
