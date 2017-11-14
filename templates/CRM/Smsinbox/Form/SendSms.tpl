@@ -2,6 +2,12 @@
 
 {* FIELD EXAMPLE: OPTION 1 (AUTOMATIC LAYOUT) *}
 
+<div class="crm-section">
+  <div class="label">Recipient</div>
+  <div class="content">{$recipient} </div>
+  <div class="clear"></div>
+</div>
+
 {foreach from=$elementNames item=elementName}
   <div class="crm-section">
     <div class="label">{$form.$elementName.label}</div>

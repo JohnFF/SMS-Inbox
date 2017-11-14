@@ -33,12 +33,20 @@ class CRM_Smsinbox_Form_SendSms extends CRM_Core_Form {
       TRUE // is required
     );
 
-    $this->addEntityRef('recipient_contact_id', 'Recipient', array(), TRUE);
+    // If a recipient wasn't passed in the URL, allow the user to select it.
+    $recipientContactId = filter_input(INPUT_GET, 'recipient_contact_id', FILTER_VALIDATE_INT);
+    if (FALSE == $recipientContactId) {
+      $this->addEntityRef('recipient_contact_id', 'Recipient', array(), TRUE);
+    }
+    else {
+      $this->assign('recipient', CRM_Smsinbox_Utils::getDisplayNameWithFallback($recipientContactId));
+    }
 
     $this->add(
       'textarea', // field type
       'message_text', // field name
       'Message', // field label
+      array(),
       TRUE // is required
     );
 
@@ -58,7 +66,14 @@ class CRM_Smsinbox_Form_SendSms extends CRM_Core_Form {
   public function postProcess() {
     $values = $this->exportValues();
     $smsSender = new CRM_Smsinbox_SmsSender();
-    list($sent, $activityId, $countSuccess) = $smsSender->sendSmsMessage($values['recipient_contact_id'], $values['message_text'], $values['sms_provider']);
+
+    // If a recipient wasn't passed in the URL, allow the user to select it.
+    $recipientContactId = filter_input(INPUT_GET, 'recipient_contact_id', FILTER_VALIDATE_INT);
+    if (FALSE == $recipientContactId) {
+      $recipientContactId = $values['recipient_contact_id'];
+    }
+
+    list($sent, $activityId, $countSuccess) = $smsSender->sendSmsMessage($recipientContactId, $values['message_text'], $values['sms_provider']);
 
     $contactName = CRM_Smsinbox_Utils::getDisplayNameWithFallback($values['recipient_contact_id']);
 

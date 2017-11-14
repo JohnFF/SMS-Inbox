@@ -19,7 +19,7 @@
                 <a href="" class="markAsReadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as read </a>
             {/if}
              |
-            <a class="replyButton crm-popup" href="/civicrm/smsinbox/sendsms">Reply</a> |
+            <a class="replyButton crm-popup" href="/civicrm/smsinbox/sendsms?recipient_contact_id={$eachInboundSmsMessage.source_contact_id}">Reply</a> |
             <a class="attachToContactButton" href="">Attach number to contact</a>
         </td>
     </tr>
