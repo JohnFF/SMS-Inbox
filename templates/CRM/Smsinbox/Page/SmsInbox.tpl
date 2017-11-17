@@ -10,7 +10,7 @@
     <tr id="row_activity_id_{$eachInboundSmsMessage.id}" {if 0 == $eachInboundSmsMessage.read}class="unread_message"{/if} data-activity_id="{$eachInboundSmsMessage.id}">
         <td>{$eachInboundSmsMessage.details}</td>
         <!-- <td><a href="/civicrm/contact/view?reset=1&cid={$eachInboundSmsMessage.source_contact_id}">{$eachInboundSmsMessage.to}</a></td> -->
-        <td><a href="/civicrm/contact/view?reset=1&cid={$eachInboundSmsMessage.source_contact_id}">{$eachInboundSmsMessage.from}</td>
+        <td><a href="{crmURL p="civicrm/contact/view" q="cid="|cat:$eachInboundSmsMessage.source_contact_id}">{$eachInboundSmsMessage.from}</td>
         <td>{$eachInboundSmsMessage.activity_date_time}</td>
         <td>
             {if $eachInboundSmsMessage.read}
@@ -19,7 +19,7 @@
                 <a href="" class="markAsReadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as read </a>
             {/if}
              |
-            <a class="replyButton crm-popup" href="/civicrm/smsinbox/sendsms?recipient_contact_id={$eachInboundSmsMessage.source_contact_id}">Reply</a>
+            <a class="replyButton crm-popup" href="{crmURL p="civicrm/smsinbox/sendsms" q="recipient_contact_id="|cat:$eachInboundSmsMessage.source_contact_id}">Reply</a>
         </td>
     </tr>
     {/foreach}
@@ -27,7 +27,7 @@
 
 {* Buttons at bottom of the page *}
 <a id='markAllAsReadButton' class="button" href='#'><i class="crm-i fa-check"></i> Mark all as read</a>
-<a class="button crm-popup" href="/civicrm/smsinbox/sendsms"><i class="crm-i fa-envelope"></i> Send SMS message</a>
+<a class="button crm-popup" href="{crmURL p="civicrm/smsinbox/sendsms"}"><i class="crm-i fa-envelope"></i> Send SMS message</a>
 
 {crmScript ext=com.civifirst.smsinbox file=js/smsinbox.js}
 {crmStyle ext=com.civifirst.smsinbox file=css/smsinbox.css}
