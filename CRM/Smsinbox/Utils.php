@@ -8,6 +8,10 @@ use CRM_Smsinbox_ExtensionUtil as E;
 class CRM_Smsinbox_Utils {
 
   public static function getDisplayNameWithFallback($contactId) {
+    if (empty($contact)) {
+      return 'Unknown';
+    }
+
      $contactDetails = civicrm_api3('contact', 'getsingle', array(
       'sequential' => 1,
       'id' => $contactId,
