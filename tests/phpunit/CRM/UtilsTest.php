@@ -155,12 +155,4 @@ class CRM_Smsinbox_SmsSenderTest extends \PHPUnit_Framework_TestCase implements 
       $this->assertTrue(is_array(CRM_Bedsafe_Utils::getAddressCoordinatesWithException($eachHostelDetails['contact_id'])));
     }
   }
-
-  /**
-   * Tests core functionality.
-   */
-  public function testGetContactSubType() {
-    $guestId = CRM_Bedsafe_TestUtils::createTestGuest();
-    $this->assertEquals(array('Guest'), CRM_Contact_BAO_Contact::getContactSubType($guestId));
-  }
 }

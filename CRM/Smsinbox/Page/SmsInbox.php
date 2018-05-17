@@ -12,10 +12,15 @@ class CRM_Smsinbox_Page_SmsInbox extends CRM_Core_Page {
     $inboundSmsActivity['read'] = $inboundSmsActivity[$this->messageReadCustomFieldId];
     // unset($inboundSmsActivity[$this->messageReadCustomFieldId]);
 
-    $inboundSmsActivity['from'] = civicrm_api3('contact', 'getvalue', array(
-      'return' => 'display_name',
-      'id' => $inboundSmsActivity['source_contact_id'],
-    ));
+    if (!empty($inboundSmsActivity['source_contact_id'])) {
+      $inboundSmsActivity['from'] = civicrm_api3('contact', 'getvalue', array(
+        'return' => 'display_name',
+        'id' => $inboundSmsActivity['source_contact_id'],
+      ));
+    }
+    else {
+      $inboundSmsActivity['from'] = 'Unknown';
+    }
 
     $inboundSmsActivity['from'] = CRM_Smsinbox_Utils::getDisplayNameWithFallback($inboundSmsActivity['source_contact_id']);
 
