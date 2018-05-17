@@ -8,7 +8,7 @@ use CRM_Smsinbox_ExtensionUtil as E;
 class CRM_Smsinbox_Utils {
 
   public static function getDisplayNameWithFallback($contactId) {
-    if (empty($contact)) {
+    if (empty($contactId)) {
       return 'Unknown';
     }
 
