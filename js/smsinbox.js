@@ -1,57 +1,43 @@
-function markAsRead(activity_id) {
+function updateSmsState(activity_id, read_status) {
     var updateParams = {
-        "sequential": 1,
-        "id": activity_id,
-        "activity_type_id": "Inbound SMS"
+        "activity_id": activity_id,
+        "read_status": read_status 
     };
 
-    updateParams[read_custom_field_id] = 1;
-
     var rowId = '#row_activity_id_' + activity_id;
-
-    var button = cj(rowId).find('.markAsReadButton');
-
-    CRM.api3('Activity', 'create', updateParams).done(function(result) {
+    var button = cj("#readStateChangeButton-" + activity_id);
+    console.log(updateParams);
+    CRM.api3('Sms', 'updatestate', updateParams).done(function(result) {
+      if (result['values']['read_status'] == 1) {
+        console.log("read status is 1");
         cj(rowId).removeClass('unread_message');
-        button.addClass('markAsUnreadButton');
         button.removeClass('markAsReadButton');
+        button.addClass('markAsUnreadButton');
         button.text('Mark as unread');
+      } 
+      else {
+        console.log("read status is 0");
+        cj(rowId).addClass('unread_message');
+        button.removeClass('markAsUnreadButton');
+        button.addClass('markAsReadButton');
+        button.text('Mark as read');
+
+      }
     });
 
-    return false;
 }
 
 cj(document).on('click', '.markAsReadButton', function() {
-    markAsRead(cj(this).attr('data-activity_id'));
+    updateSmsState(cj(this).attr('data-activity_id'), 1);
     return false;
 });
-
 cj(document).on('click', '.markAsUnreadButton', function() {
-
-    var updateParams = {
-        "sequential": 1,
-        "id": cj(this).attr('data-activity_id'),
-        "activity_type_id": "Inbound SMS",
-    };
-
-    updateParams[read_custom_field_id] = 0;
-
-    var activity_id = cj(this).attr('data-activity_id');
-    var button = cj(this);
-
-    CRM.api3('Activity', 'create', updateParams).done(function(result) {
-        cj('#row_activity_id_' + activity_id).addClass('unread_message');
-        button.text('Mark as read');
-        button.removeClass('markAsUnreadButton');
-        button.addClass('markAsReadButton');
-    });
-
+    updateSmsState(cj(this).attr('data-activity_id'), 0);
     return false;
 });
-
 
 cj(document).on('click', '#markAllAsReadButton', function() {
     cj('.unread_message').each(function (){
-        markAsRead(cj(this).attr('data-activity_id'));
+        updateSmsState(cj(this).attr('data-activity_id'), 1);
     });
 });

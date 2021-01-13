@@ -41,28 +41,11 @@ class CRM_Smsinbox_Page_SmsInbox extends CRM_Core_Page {
 
   public function run() {
 
-    $this->messageReadCustomFieldId = CRM_Smsinbox_Utils::getMessageReadCustomFieldId();
-
-    $inboundSmsMessages = civicrm_api3('activity', 'get', array(
-      'sequential' => 1,
-      'activity_type_id' => 'Inbound SMS',
-      'options' => array('limit' => 0),
-      'return' => array(
-        'id',
-        $this->messageReadCustomFieldId,
-        'activity_date_time',
-        'details',
-        'source_contact_id',
-      ),
+    $inboundSmsMessages = civicrm_api3('Sms', 'getinbound', array(
+      'options' => array('limit' => 0, 'offset' => 25),
     ));
 
-    foreach ($inboundSmsMessages['values'] as &$eachInboundSmsMessage) {
-      $this->setMessageInformation($eachInboundSmsMessage);
-    }
-
     $this->assign('inboundSmsMessages', $inboundSmsMessages['values']);
-
-    $this->assign('readCustomField', $this->messageReadCustomFieldId);
 
     parent::run();
   }

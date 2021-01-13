@@ -14,9 +14,9 @@
         <td>{$eachInboundSmsMessage.activity_date_time}</td>
         <td>
             {if $eachInboundSmsMessage.read}
-                <a href="" class="markAsUnreadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as unread</a>
+                <a href="" id="readStateChangeButton-{$eachInboundSmsMessage.id}" class="markAsUnreadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as unread</a>
             {else}
-                <a href="" class="markAsReadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as read </a>
+                <a href="" id="readStateChangeButton-{$eachInboundSmsMessage.id}" class="markAsReadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as read </a>
             {/if}
              |
             <a class="replyButton crm-popup" href="{crmURL p="civicrm/smsinbox/sendsms" q="recipient_contact_id="|cat:$eachInboundSmsMessage.source_contact_id}">Reply</a>
