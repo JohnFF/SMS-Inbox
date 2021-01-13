@@ -57,7 +57,7 @@ class CRM_Smsinbox_SmsSender {
       list($sent, $activityId, $countSuccess) = CRM_Activity_BAO_Activity::sendSMS($recipientContactDetailArray, $activityParams, $smsParams, $contactIdArray, NULL);
     }
     catch (Exception $exception) {
-      throw new CRM_Exception($exception->getMessage(), self::EXCEPTION_CODE_SMS_FAILED_INTERNAL);
+      throw new CRM_Core_Exception($exception->getMessage(), self::EXCEPTION_CODE_SMS_FAILED_INTERNAL);
     }
 
     if ($countSuccess !== 1) {
@@ -67,7 +67,7 @@ class CRM_Smsinbox_SmsSender {
         $errorMessage .= $sent[0]->getMessage();
       }
 
-      throw new CRM_Exception($errorMessage, self::EXCEPTION_CODE_SMS_FAILED_CHECK);
+      throw new CRM_Core_Exception($errorMessage, self::EXCEPTION_CODE_SMS_FAILED_CHECK);
     }
   }
 
