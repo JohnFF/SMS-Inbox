@@ -2,14 +2,14 @@
 use CRM_Smsinbox_ExtensionUtil as E;
 
 /**
- * Sms.Updatestate API specification (optional)
+ * SmsInbound.Updatestate API specification (optional)
  * This is used for documentation and validation.
  *
  * @param array $spec description of fields supported by this API call
  *
  * @see https://docs.civicrm.org/dev/en/latest/framework/api-architecture/
  */
-function _civicrm_api3_sms_Updatestate_spec(&$spec) {
+function _civicrm_api3_smsinbound_Updatestate_spec(&$spec) {
   $spec['activity_id']['api.required'] = 1;
   $spec['read_status']['api.required'] = 1;
 }
@@ -26,6 +26,6 @@ function _civicrm_api3_sms_Updatestate_spec(&$spec) {
  *
  * @throws API_Exception
  */
-function civicrm_api3_sms_Updatestate($params) {
-  return civicrm_api3_create_success(CRM_Smsinbox_SmsState::update($params['activity_id'], $params['read_status']), $params, 'Sms', 'Updatestate');
+function civicrm_api3_smsinbound_Updatestate($params) {
+  return civicrm_api3_create_success(CRM_Smsinbox_SmsInbound::update_state($params['activity_id'], $params['read_status']), $params, 'SmsInbound', 'Updatestate');
 }

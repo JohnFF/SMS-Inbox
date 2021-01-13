@@ -7,7 +7,7 @@ function updateSmsState(activity_id, read_status) {
     var rowId = '#row_activity_id_' + activity_id;
     var button = cj("#readStateChangeButton-" + activity_id);
     console.log(updateParams);
-    CRM.api3('Sms', 'updatestate', updateParams).done(function(result) {
+    CRM.api3('Smsinbound', 'updatestate', updateParams).done(function(result) {
       if (result['values']['read_status'] == 1) {
         console.log("read status is 1");
         cj(rowId).removeClass('unread_message');

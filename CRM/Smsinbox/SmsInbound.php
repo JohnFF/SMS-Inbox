@@ -4,8 +4,16 @@ use CRM_Smsinbox_ExtensionUtil as E;
 /**
  * Retreive inbound SMS messages along with metadata.
  */
-class CRM_Smsinbox_GetInbound {
+class CRM_Smsinbox_SmsInbound {
 
+  /**
+   * Retrieve all inbound SMS messages along with their state.
+   *
+   * This function includes contact display_name when possible and email if there
+   * is no display name. It also includes whether or not the inbound sms message
+   * has been read.
+   *
+   **/
   public function get($options) {
     $limit = 25;
     $offset = 0;
@@ -57,6 +65,36 @@ class CRM_Smsinbox_GetInbound {
     }
 
     return $return;
+  }
+
+  /**
+   * Update the state of an inbound SMS message
+   *
+   * Specifically, change the read_status to 0 (unread) or 1 (read).
+   *
+   **/
+  public function update_state($activity_id, $read_status) {
+    $sql = "REPLACE INTO civicrm_smsinbox_state SET activity_id = %0, read_status = %1";
+    $params = [ 0 => [ $activity_id, 'Integer' ], 1 => [ $read_status, 'Integer' ] ];
+    CRM_Core_DAO::executeQuery($sql, $params);
+    return [ 'activity_id' => $activity_id, 'read_status' => $read_status ];
+  }
+
+  /**
+   * Count the number of unread SMS messages.
+   *
+   **/
+  public function count_unread() {
+    $sql = "
+      SELECT COUNT(DISTINCT activity.id) AS count 
+      FROM civicrm_activity activity 
+        JOIN civicrm_option_value ov ON activity.activity_type_id = ov.value AND name = 'Inbound SMS'
+        JOIN civicrm_option_group og ON ov.option_group_id = og.id AND og.name = 'activity_type'
+        LEFT JOIN civicrm_smsinbox_state state ON activity.id = state.activity_id 
+      WHERE state.read_status IS NULL OR state.read_status = 0";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+    $dao->fetch();
+    return $dao->count;
   }
 
 }
