@@ -28,4 +28,18 @@ class CRM_Smsinbox_Utils {
     )), '', 'info');
   }
 
+  public static function getDisplayNameWithFallback($contactId) {
+    if (empty($contactId)) {
+      return 'Unknown';
+    }
+
+     $contactDetails = civicrm_api3('contact', 'getsingle', array(
+      'sequential' => 1,
+      'id' => $contactId,
+      'return' => array('display_name', 'email'),
+    ));
+
+    return !empty($contactDetails['display_name']) ? $contactDetails['display_name'] : $contactDetails['email'];
+  }
+
 }
