@@ -42,3 +42,14 @@ function civicrm_api3_smsinbound_Get($params) {
   }
   return civicrm_api3_create_success(CRM_Smsinbox_SmsInbound::get($options), $params, 'SmsInbound', 'Get');
 }
+
+/**
+ * SmsInbound.Getcount API
+ *
+ * @param array $params
+ *
+ * @return Int - total number of inbound SMS messages messages.
+ **/
+function civicrm_api3_smsinbound_Getcount($params) {
+  return intval(CRM_Smsinbox_SmsInbound::getcount());
+}

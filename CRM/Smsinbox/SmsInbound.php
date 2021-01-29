@@ -17,7 +17,6 @@ class CRM_Smsinbox_SmsInbound {
   public function get($options) {
     $limit = 25;
     $offset = 0;
-
     $keys = [ 'limit', 'offset' ];
     foreach ($keys as $key) {
       if (array_key_exists($key, $options)) {
@@ -39,7 +38,8 @@ class CRM_Smsinbox_SmsInbound {
         LEFT JOIN civicrm_smsinbox_state state ON activity.id = state.activity_id
         LEFT JOIN civicrm_contact contact ON activity_contact.contact_id = contact.id
         LEFT JOIN civicrm_email email ON email.contact_id = activity_contact.contact_id AND email.is_primary = 1
-      LIMIT %1, %2
+      ORDER BY activity.activity_date_time DESC
+      LIMIT %1 OFFSET %2
       ";
     $params = [ 0 => [ $source_record_type_id, 'Integer' ], 1 => [ $limit, 'Integer' ], 2 => [ $offset, 'Integer' ] ];
     $dao = CRM_Core_DAO::executeQuery($query, $params);
@@ -97,4 +97,19 @@ class CRM_Smsinbox_SmsInbound {
     return $dao->count;
   }
 
+  /**
+   * Count the total number of SMS messages.
+   *
+   **/
+  public function getcount() {
+    $sql = "
+      SELECT COUNT(DISTINCT activity.id) AS count
+      FROM civicrm_activity activity
+        JOIN civicrm_option_value ov ON activity.activity_type_id = ov.value AND name = 'Inbound SMS'
+        JOIN civicrm_option_group og ON ov.option_group_id = og.id AND og.name = 'activity_type'
+      ";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+    $dao->fetch();
+    return $dao->count;
+  }
 }

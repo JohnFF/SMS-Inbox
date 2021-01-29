@@ -1,5 +1,4 @@
-{* Set the handle of the read_custom_field_id for use by JS API calls *}
-<script type="text/javascript" id='mark_all_as_read'>var read_custom_field_id = "{$readCustomField}";</script>
+{include file="CRM/common/pager.tpl" location="top"}
 
 {* Display inbound messages *}
 <table>
@@ -28,6 +27,7 @@
 {* Buttons at bottom of the page *}
 <a id='markAllAsReadButton' class="button" href='#'><i class="crm-i fa-check"></i> Mark all as read</a>
 <a class="button crm-popup" href="{crmURL p="civicrm/smsinbox/sendsms"}"><i class="crm-i fa-envelope"></i> Send SMS message</a>
+
 
 {crmScript ext=com.civifirst.smsinbox file=js/smsinbox.js}
 {crmStyle ext=com.civifirst.smsinbox file=css/smsinbox.css}
