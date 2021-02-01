@@ -1,5 +1,5 @@
 .unread_message td {
-    background-color: #98FB98;
+   font-weight: bold;
 }
 td {
     -moz-transition: all 0.5s ease-in;
