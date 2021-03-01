@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Tiny class to allow the mocking of core sendSMS.
- * There is probably a better way to do this.
+ * Class with sole responsibility to send SMS message.
+ * Tiny class allows mocking.
  *
  * @author john
  */
@@ -11,31 +11,37 @@ class CRM_Smsinbox_SmsSender {
   const EXCEPTION_CODE_SMS_FAILED_CHECK = 9600;
   const EXCEPTION_CODE_SMS_FAILED_INTERNAL = 9601;
 
-  public function sendSms(&$contactDetails, &$activityParams, &$contactIds, &$smsParams = array(), $userID = NULL) {
-    return CRM_Activity_BAO_Activity::sendSMS($contactDetails, $activityParams, $smsParams, $contactIds, $userID);
-  }
-
+  /**
+   * Sends the SMS message using CRM_Activity_BAO_Activity::sendSMS.
+   *
+   * @param int $recipientContactId
+   * @param string $messageText
+   * @param int $smsProviderId
+   * @throws CRM_Core_Exception
+   */
   public function sendSmsMessage($recipientContactId, $messageText, $smsProviderId) {
-    // This API call acts as a check to make sure that there is a phone configured
-    // that will be used. Twilio fails to send the message silently if it can't find
+    // Twilio fails to send the message silently if it can't find
     // a Mobile for the contact.
     $mobilePhoneTypeId = CRM_Core_PseudoConstant::getKey('CRM_Core_BAO_Phone', 'phone_type_id', 'Mobile');
+
     $result = civicrm_api3('Phone', 'get', array(
       'contact_id' => $recipientContactId,
       'phone_type_id' => $mobilePhoneTypeId,
     ));
 
-    $smsParams = array();
-    // What if we have more then on mobile phone? Oh well. Let's take the first one.
-    $phone = NULL;
-    foreach ($result['values'] as $value) {
-      $phone = $value['phone_numeric'];
-      break;
+    if (0 == $result['count']) {
+        throw new CRM_Core_Exception('No mobile phone found for this contact.');
     }
+
+    // Select the first mobile phone for the recipient.
+    $phone = $result['values'][0]['phone_numeric'];
 
     if (!$phone) {
       throw new CRM_Core_Exception("Contact id has no mobile phone numbers.", self::EXCEPTION_CODE_SMS_FAILED_INTERNAL);
     }
+
+    // Assemble the call parameters.
+    $smsParams = array();
 
     // Use default SMS provider unless one is explicitly passed.
     if (empty($smsProviderId)) {
@@ -56,14 +62,17 @@ class CRM_Smsinbox_SmsSender {
 
     $contactIdArray = array($recipientContactId);
 
-    $contactDetailsArray = [ [ 'contact_id' => $recipientContactId, 'phone' => $phone, 'phone_type_id' => $mobilePhoneTypeId ] ];
+    $recipientDetailsArray = [ [ 'contact_id' => $recipientContactId, 'phone' => $phone, 'phone_type_id' => $mobilePhoneTypeId ] ];
+
+    // Try sending the message.
     try {
-      list($sent, $activityId, $countSuccess) = CRM_Activity_BAO_Activity::sendSMS($contactDetailsArray, $activityParams, $smsParams, $contactIdArray, NULL);
+      list($sent, $activityId, $countSuccess) = CRM_Activity_BAO_Activity::sendSMS($recipientDetailsArray, $activityParams, $smsParams, $contactIdArray, NULL);
     }
     catch (Exception $exception) {
       throw new CRM_Core_Exception($exception->getMessage(), self::EXCEPTION_CODE_SMS_FAILED_INTERNAL);
     }
 
+    // If the count is 0, nothing was sent.
     if ($countSuccess !== 1) {
       $errorMessage = "SMS to contact id " . $recipientContactId . " failed.";
 
@@ -77,5 +86,4 @@ class CRM_Smsinbox_SmsSender {
       throw new CRM_Core_Exception($errorMessage, self::EXCEPTION_CODE_SMS_FAILED_CHECK);
     }
   }
-
 }
