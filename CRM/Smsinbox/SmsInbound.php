@@ -14,7 +14,7 @@ class CRM_Smsinbox_SmsInbound {
    * has been read.
    *
    **/
-  public function get($options) {
+  public static function get($options) {
     $limit = 25;
     $offset = 0;
     $keys = [ 'limit', 'offset' ];
@@ -73,7 +73,7 @@ class CRM_Smsinbox_SmsInbound {
    * Specifically, change the read_status to 0 (unread) or 1 (read).
    *
    **/
-  public function update_state($activity_id, $read_status) {
+  public static function update_state($activity_id, $read_status) {
     $sql = "REPLACE INTO civicrm_smsinbox_state SET activity_id = %0, read_status = %1";
     $params = [ 0 => [ $activity_id, 'Integer' ], 1 => [ $read_status, 'Integer' ] ];
     CRM_Core_DAO::executeQuery($sql, $params);
@@ -101,7 +101,7 @@ class CRM_Smsinbox_SmsInbound {
    * Count the total number of SMS messages.
    *
    **/
-  public function getcount() {
+  public static function getcount() {
     $sql = "
       SELECT COUNT(DISTINCT activity.id) AS count
       FROM civicrm_activity activity
