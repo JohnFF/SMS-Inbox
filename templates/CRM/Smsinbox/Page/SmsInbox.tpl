@@ -1,5 +1,4 @@
-{* Set the handle of the read_custom_field_id for use by JS API calls *}
-<script type="text/javascript" id='mark_all_as_read'>var read_custom_field_id = "{$readCustomField}";</script>
+{include file="CRM/common/pager.tpl" location="top"}
 
 {* Display inbound messages *}
 <table>
@@ -14,9 +13,9 @@
         <td>{$eachInboundSmsMessage.activity_date_time}</td>
         <td>
             {if $eachInboundSmsMessage.read}
-                <a href="" class="markAsUnreadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as unread</a>
+                <a href="" id="readStateChangeButton-{$eachInboundSmsMessage.id}" class="markAsUnreadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as unread</a>
             {else}
-                <a href="" class="markAsReadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as read </a>
+                <a href="" id="readStateChangeButton-{$eachInboundSmsMessage.id}" class="markAsReadButton" data-activity_id="{$eachInboundSmsMessage.id}">Mark as read </a>
             {/if}
              |
             <a class="replyButton crm-popup" href="{crmURL p="civicrm/smsinbox/sendsms" q="recipient_contact_id="|cat:$eachInboundSmsMessage.source_contact_id}">Reply</a>
@@ -28,6 +27,7 @@
 {* Buttons at bottom of the page *}
 <a id='markAllAsReadButton' class="button" href='#'><i class="crm-i fa-check"></i> Mark all as read</a>
 <a class="button crm-popup" href="{crmURL p="civicrm/smsinbox/sendsms"}"><i class="crm-i fa-envelope"></i> Send SMS message</a>
+
 
 {crmScript ext=com.civifirst.smsinbox file=js/smsinbox.js}
 {crmStyle ext=com.civifirst.smsinbox file=css/smsinbox.css}

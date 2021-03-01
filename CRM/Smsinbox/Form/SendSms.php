@@ -73,20 +73,19 @@ class CRM_Smsinbox_Form_SendSms extends CRM_Core_Form {
       $recipientContactId = $values['recipient_contact_id'];
     }
 
-    list($sent, $activityId, $countSuccess) = $smsSender->sendSmsMessage($recipientContactId, $values['message_text'], $values['sms_provider']);
-
-    $contactName = CRM_Smsinbox_Utils::getDisplayNameWithFallback($values['recipient_contact_id']);
-
-    if ($countSuccess >= 1) {
+    $contactName = CRM_Smsinbox_Utils::getDisplayNameWithFallback($recipientContactId);
+    try {
+      $smsSender->sendSmsMessage($recipientContactId, $values['message_text'], $values['sms_provider']);
       CRM_Core_Session::setStatus(E::ts('Message to "%1" sent', array(
         1 => $contactName,
       )), 'success');
     }
-    else {
-      CRM_Core_Session::setStatus(E::ts('Failed to send message to "%1"', array(
-        1 => $contactName,
+    catch (Exception $exception) {
+      CRM_Core_Session::setStatus(E::ts('Failed to send message to "%1". Error: %2', array(
+        1 => $contactName, 2=> $exception->getMessage()
       )), 'alert');
     }
+
     parent::postProcess();
   }
 
