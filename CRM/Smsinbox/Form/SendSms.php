@@ -10,6 +10,7 @@ use CRM_Smsinbox_ExtensionUtil as E;
 class CRM_Smsinbox_Form_SendSms extends CRM_Core_Form {
   public function buildQuickForm() {
 
+    // Add SMS provider option.
     $smsProviders = civicrm_api3('SmsProvider', 'get', array(
       'return' => array('title'),
       'options' => array('limit' => 0),
@@ -24,7 +25,6 @@ class CRM_Smsinbox_Form_SendSms extends CRM_Core_Form {
       $smsProviderOptions[$eachSmsProviderKey] = $eachSmsProviderValue['title'];
     }
 
-    // add form elements
     $this->add(
       'select', // field type
       'sms_provider', // field name
@@ -33,15 +33,17 @@ class CRM_Smsinbox_Form_SendSms extends CRM_Core_Form {
       TRUE // is required
     );
 
+    // Add either the select recipient option or just their name if the reply button was clicked.
     // If a recipient wasn't passed in the URL, allow the user to select it.
     $recipientContactId = filter_input(INPUT_GET, 'recipient_contact_id', FILTER_VALIDATE_INT);
     if (FALSE == $recipientContactId) {
       $this->addEntityRef('recipient_contact_id', 'Recipient', array(), TRUE);
     }
     else {
-      $this->assign('recipient', CRM_Smsinbox_Utils::getDisplayNameWithFallback($recipientContactId));
+      $this->add('static', 'recipient', 'Recipient', CRM_Smsinbox_Utils::getDisplayNameWithFallback($recipientContactId));
     }
 
+    // Add message field.
     $this->add(
       'textarea', // field type
       'message_text', // field name

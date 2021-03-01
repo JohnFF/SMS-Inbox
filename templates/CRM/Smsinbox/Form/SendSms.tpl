@@ -1,13 +1,5 @@
 {* HEADER *} 
 
-{* FIELD EXAMPLE: OPTION 1 (AUTOMATIC LAYOUT) *}
-
-<div class="crm-section">
-  <div class="label">Recipient</div>
-  <div class="content">{$recipient} </div>
-  <div class="clear"></div>
-</div>
-
 {foreach from=$elementNames item=elementName}
   <div class="crm-section">
     <div class="label">{$form.$elementName.label}</div>
@@ -15,13 +7,6 @@
     <div class="clear"></div>
   </div>
 {/foreach}
-
-{* FIELD EXAMPLE: OPTION 2 (MANUAL LAYOUT)
-
-  <div>
-    <span>{$form.favorite_color.label}</span>
-    <span>{$form.favorite_color.html}</span>
-  </div>
 
 {* FOOTER *}
 <div class="crm-submit-buttons">
