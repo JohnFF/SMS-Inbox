@@ -195,5 +195,8 @@ function smsinbox_civicrm_pageRun(&$page) {
  * @param type $form
  */
 function smsinbox_civicrm_buildForm($formName, &$form) {
+  if ('CRM_Smsinbox_Form_SendSms' == $formName) {
+    return;
+  }
   CRM_Smsinbox_Utils::checkForUnreadMessageStatus();
 }
