@@ -84,7 +84,7 @@ class CRM_Smsinbox_SmsInbound {
    * Count the number of unread SMS messages.
    *
    **/
-  public function count_unread() {
+  public static function count_unread() {
     $sql = "
       SELECT COUNT(DISTINCT activity.id) AS count 
       FROM civicrm_activity activity 
