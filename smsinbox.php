@@ -152,13 +152,6 @@ function smsinbox_civicrm_navigationMenu(&$menu) {
 } // */
 
 /**
- * Implements hook_civicrm_inboundSms
- */
-function smsinbox_civicrm_inboundSMS($message) {
-  watchdog('SMS Inbox', print_r($message, TRUE), array(), WATCHDOG_ERROR);
-}
-
-/**
  * Implements hook_civicrm_navigationMenu().
  */
 function smsinbox_civicrm_navigationMenu(&$params) {
