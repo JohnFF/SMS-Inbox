@@ -55,10 +55,10 @@ class CRM_Smsinbox_SmsInbound {
       $read = intval($dao->read_status);
       $row = [ 
         'id' => $dao->id,
-        'from' => $from,
+        'from' => htmlentities($from),
         'read' => $read,
         'activity_date_time' => $dao->activity_date_time,
-        'details' => $dao->details,
+        'details' => htmlentities($dao->details),
         'source_contact_id' => $dao->contact_id
       ];
       $return[] = $row;
