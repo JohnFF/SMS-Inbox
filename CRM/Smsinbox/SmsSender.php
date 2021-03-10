@@ -34,7 +34,8 @@ class CRM_Smsinbox_SmsSender {
     }
 
     // Select the first mobile phone for the recipient.
-    $phone = $result['values'][0]['phone_numeric'];
+    $phone_values = array_shift($result['values']);
+    $phone = $phone_values['phone_numeric'];
 
     if (!$phone) {
       throw new CRM_Core_Exception("Contact id has no mobile phone numbers.", self::EXCEPTION_CODE_SMS_FAILED_INTERNAL);
