@@ -10,7 +10,10 @@ class CRM_Smsinbox_Utils {
    * If there are unread SMS messages, this displays a message.
    */
   public static function checkForUnreadMessageStatus() {
-
+    if (!CRM_Core_Permission::check('send SMS')) {
+      // Permission denied.
+      return;
+    }
     $unreadMessageCount = CRM_Smsinbox_SmsInbound::count_unread(); 
 
     if (0 == $unreadMessageCount) {
