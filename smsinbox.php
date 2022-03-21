@@ -180,12 +180,35 @@ function smsinbox_civicrm_navigationMenu(&$params) {
  *
  * @param type $page
  */
-function smsinbox_civicrm_pageRun(&$page) {
-  if (get_class($page) == 'CRM_Smsinbox_Page_SmsInbox') {
+function smsinbox_civicrm_check(&$messages, $statusNames, $includeDisabled) {
+  // Early return if $statusNames doesn't call for our check
+  if ($statusNames && !in_array('smsinbox', $statusNames)) {
     return;
   }
+  if (!$includeDisabled) {
+    $disabled = \Civi\Api4\StatusPreference::get()
+      ->setCheckPermissions(FALSE)
+      ->addWhere('is_active', '=', FALSE)
+      ->addWhere('domain_id', '=', 'current_domain')
+      ->addWhere('name', '=', 'smsinbox')
+      ->execute()->count();
+    if ($disabled) {
+      return;
+    }
+  }
+  $messageText = CRM_Smsinbox_Utils::checkForUnreadMessageStatus();
 
-  CRM_Smsinbox_Utils::checkForUnreadMessageStatus();
+  if ($messageText) {
+    $message = new CRM_Utils_Check_Message(
+      'smsinbox',
+      $messageText,
+      E::ts('Unread SMSInbox messages'),
+      \Psr\Log\LogLevel::WARNING,
+      'fa-flag'
+    );
+    $message->addHelp(E::ts('You can read these messages by clicking the SMSInbox menu item from the Mailings menu.'));
+    $messages[] = $message;
+  }
 }
 
 /**
